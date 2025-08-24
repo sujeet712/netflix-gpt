@@ -1,6 +1,12 @@
 # Netflix Gpt
- -Create React App
- -Configured TaulwindCSS
+ - Create React App
+ - Configured TaulwindCSS
+ - Header
+ - Routing of App 
+ - Login Form
+ - Sign Up Form
+ - Form Validation
+ - useRef Hook
 
 
 

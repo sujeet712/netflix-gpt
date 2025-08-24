@@ -5,6 +5,10 @@ const Login = () => {
   // const [isSignInForm, setIsSignInForm] = useState(true);
   const [isSignInForm , setIsSignInForm] = useState(true);
 
+  const handleButtonClick= () =>{
+    //VAlidate the form
+  }
+
   const toggleSignInForm = () =>{
      setIsSignInForm(!isSignInForm );
   }
@@ -40,7 +44,7 @@ const Login = () => {
           placeholder="Password"
           className="py-2 m-2 w-full bg-gray-700"
         />
-        <button className="py-4 m-4 bg-red-700 w-full rounded-lg">
+        <button className="py-4 m-4 bg-red-700 w-full rounded-lg " onClick={handleButtonClick}>
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
         <p className="py-4" onClick={toggleSignInForm}>
