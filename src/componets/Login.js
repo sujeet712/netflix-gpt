@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
 import Header from "./Header";
 import { checkEmailValidData } from "../utils/Validate";
-
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -12,14 +16,51 @@ const Login = () => {
 
   const handleButtonClick = () => {
     //VAlidate the form data
-   
-    console.log(email.current.value);
-    console.log(password.current.value);
 
-    const message =  checkEmailValidData(email.current.value, password.current.value);
-    console.log(message);
+    const message = checkEmailValidData(
+      email.current.value,
+      password.current.value
+    );
     setErrorMessage(message);
+    if (message) return;
 
+    // Sign In Sign up login
+    if (!isSignInForm) {
+      //sigh up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " " + errorMessage);
+        });
+    } else {
+      //Sign in logic
+
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " " + errorMessage);
+        });
+    }
   };
 
   const toggleSignInForm = () => {
@@ -35,7 +76,10 @@ const Login = () => {
           alt="logo"
         />
       </div>
-      <form onSubmit={(e) => e.preventDefault()} className="w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
+      >
         <h1 className="font-bold text-3xl py-4">
           {isSignInForm ? "Sign In" : "Sign Up"}
           {/* {isSignInForm ? "Sign in" : "Sign Up"} */}
@@ -48,13 +92,13 @@ const Login = () => {
           />
         )}
         <input
-         ref={email}
+          ref={email}
           type="text"
           placeholder="Email Address"
           className="py-2 m-2 w-full bg-gray-700"
         />
         <input
-        ref={password}
+          ref={password}
           type="text"
           placeholder="Password"
           className="py-2 m-2 w-full bg-gray-700"
